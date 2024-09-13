@@ -1,13 +1,14 @@
 "use client";
 import clsx from "clsx";
-import { FileText, Github, House, Linkedin } from "lucide-react";
+import { FileText, Github, House, Linkedin, Logs } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Fragment } from "react";
 
 const links = [
   { icon: House, to: "/", disabled: false },
-  { icon: FileText, to: "/docs", disabled: true, div: true },
+  { icon: FileText, to: "/docs", disabled: true },
+  { icon: Logs, to: "/urls", disabled: true, div: true },
   {
     icon: Github,
     to: "http://github.com/reinaldo-silva/linky.git",
