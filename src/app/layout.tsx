@@ -1,4 +1,4 @@
-import { ClientOnly } from "@/components/clientOnly";
+import { ClientOnly } from "@/components/ClientOnly12";
 import { Header, HeaderLoading } from "@/components/Header";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";

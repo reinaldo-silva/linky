@@ -1,5 +1,5 @@
 import { Logo } from "@/components/Logo";
-import { ShortenUrlForm } from "@/components/shortenUrlForm";
+import { ShortenUrlForm } from "@/components/ShortenUrlForm212";
 
 export default function Home() {
   return (
