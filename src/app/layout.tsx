@@ -1,3 +1,5 @@
+import { ClientOnly } from "@/components/clientOnly";
+import { Header, HeaderLoading } from "@/components/Header";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -20,7 +22,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} antialiased`}>{children}</body>
+      <body className={`${inter.variable} antialiased`}>
+        <ClientOnly fallback={<HeaderLoading />}>
+          <Header />
+        </ClientOnly>
+        {children}
+      </body>
     </html>
   );
 }
