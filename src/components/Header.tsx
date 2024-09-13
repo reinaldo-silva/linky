@@ -35,7 +35,7 @@ export function Header() {
             <Link
               href={link.disabled ? pathname : link.to}
               className={clsx("p-2 rounded-xl transition-all duration-75", {
-                "hover:bg-gradient-to-br from-zinc-800 to-zinc-400 hover:text-zinc-100":
+                "hover:bg-gradient-to-br from-zinc-950 to-zinc-600 hover:text-zinc-100":
                   !link.disabled,
                 "opacity-40 cursor-not-allowed": link.disabled,
                 "bg-gradient-to-br from-zinc-800 to-zinc-400 text-zinc-100":

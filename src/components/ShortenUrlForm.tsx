@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@/components/Button";
+import { Button, ButtonVariants } from "@/components/Button";
 import { copyToClipboard } from "@/utils/copyToClipboard";
 import { ChevronDown, Clipboard, Link2, TimerReset } from "lucide-react";
 import { FormEvent, useState } from "react";
@@ -101,15 +101,15 @@ export function ShortenUrlForm() {
             {shortUrl}
           </span>
           <Button
-            onClick={() => copyToClipboard(shortUrl)}
+            variant={ButtonVariants.SECONDARY}
             type="button"
-            className="!bg-sky-600"
+            onClick={() => copyToClipboard(shortUrl)}
           >
             Copy to clipboard
             <Clipboard size={20} />
           </Button>
           <Button
-            className="hover:underline !bg-transparent text-zinc-800"
+            variant={ButtonVariants.GHOST}
             type="button"
             onClick={() => {
               setShortUrl("");
