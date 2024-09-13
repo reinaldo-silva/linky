@@ -23,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} antialiased`}>
+      <body className={`${inter.variable} antialiased px-6 bg-zinc-50`}>
         <Providers>
           <ClientOnly fallback={<HeaderLoading />}>
             <Header />

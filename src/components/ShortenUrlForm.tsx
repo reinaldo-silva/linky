@@ -54,7 +54,7 @@ export function ShortenUrlForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col min-w-[360px] gap-4 mt-8"
+      className="flex flex-col w-full sm:max-w-[460px] gap-4 mt-8"
     >
       {!shortUrl ? (
         <>
