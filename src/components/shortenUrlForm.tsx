@@ -20,15 +20,16 @@ export function ShortenUrlForm() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    const res = await fetch(
-      `/api/shorten?url=${url}&exp=${expirationOptions[expirationIndex].value}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const res = await fetch(`/api/shorten`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        url,
+        exp: expirationOptions[expirationIndex].value,
+      }),
+    });
 
     const resJson = await res.json();
 
