@@ -39,7 +39,7 @@ export function Button({
       {...rest}
     >
       {children}
-      {isLoading && <LoaderCircle />}
+      {isLoading && <LoaderCircle className="animate-spin" />}
     </button>
   );
 }

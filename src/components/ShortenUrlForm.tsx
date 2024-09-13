@@ -3,8 +3,9 @@ import { Button, ButtonVariants } from "@/components/Button";
 import { copyToClipboard } from "@/utils/copyToClipboard";
 import { isValidURL } from "@/utils/isValidUrl";
 import { newToast } from "@/utils/newToast";
+import { animated, useSpring } from "@react-spring/web";
 import { ChevronDown, Clipboard, Link2, TimerReset } from "lucide-react";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { zinc } from "tailwindcss/colors";
 
 const expirationOptions = [
@@ -19,6 +20,21 @@ export function ShortenUrlForm() {
   const [expirationIndex, setExpirationIndex] = useState(0);
   const [settingOpen, setSettingOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const contentRef = useRef<HTMLDivElement | null>(null);
+  const [height, setHeight] = useState<number>(0);
+
+  useEffect(() => {
+    if (contentRef.current) {
+      setHeight(contentRef.current.scrollHeight);
+    }
+  }, [settingOpen]);
+
+  const { height: animatedHeight, opacity } = useSpring({
+    height: settingOpen ? height + 2 : 0,
+    opacity: settingOpen ? 1 : 0,
+    config: { tension: 220, friction: 120, duration: 250 }, // Ajuste para suavidade
+  });
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -52,12 +68,9 @@ export function ShortenUrlForm() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex flex-col w-full sm:max-w-[460px] gap-4 mt-8"
-    >
+    <div className="flex flex-col w-full sm:max-w-[460px] gap-4 mt-8">
       {!shortUrl ? (
-        <>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="bg-zinc-200 flex items-center p-3 py-4 rounded-2xl border border-zinc-300">
             <Link2 color={zinc[600]} strokeWidth={3} />
             <input
@@ -81,8 +94,14 @@ export function ShortenUrlForm() {
               </span>
               <ChevronDown />
             </button>
-            {settingOpen && (
-              <div className="flex bg-zinc-200 border border-zinc-300 rounded-xl">
+
+            <animated.div
+              style={{ overflow: "hidden", height: animatedHeight, opacity }}
+            >
+              <div
+                ref={contentRef}
+                className="flex bg-zinc-200 border border-zinc-300 rounded-xl"
+              >
                 {expirationOptions.map((op, index) => (
                   <label
                     key={index}
@@ -104,10 +123,12 @@ export function ShortenUrlForm() {
                   </label>
                 ))}
               </div>
-            )}
+            </animated.div>
           </div>
-          <Button isLoading={isLoading}>Shorten!</Button>
-        </>
+          <Button type="submit" isLoading={isLoading}>
+            Shorten!
+          </Button>
+        </form>
       ) : (
         <>
           <span className="bg-zinc-200 p-4 font-semibold rounded-2xl border border-zinc-300">
@@ -133,6 +154,6 @@ export function ShortenUrlForm() {
           </Button>
         </>
       )}
-    </form>
+    </div>
   );
 }
