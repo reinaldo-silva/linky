@@ -1,6 +1,8 @@
 "use client";
 import { Button, ButtonVariants } from "@/components/Button";
 import { copyToClipboard } from "@/utils/copyToClipboard";
+import { isValidURL } from "@/utils/isValidUrl";
+import { newToast } from "@/utils/newToast";
 import { ChevronDown, Clipboard, Link2, TimerReset } from "lucide-react";
 import { FormEvent, useState } from "react";
 import { zinc } from "tailwindcss/colors";
@@ -16,10 +18,16 @@ export function ShortenUrlForm() {
   const [shortUrl, setShortUrl] = useState("");
   const [expirationIndex, setExpirationIndex] = useState(0);
   const [settingOpen, setSettingOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
+    if (!isValidURL(url)) {
+      return newToast({ text: "Invalid url!", type: "error" });
+    }
+
+    setIsLoading(true);
     const res = await fetch(`/api/shorten`, {
       method: "POST",
       headers: {
@@ -29,13 +37,18 @@ export function ShortenUrlForm() {
         url,
         exp: expirationOptions[expirationIndex].value,
       }),
-    });
+    }).finally(() => setIsLoading(false));
 
     const resJson = await res.json();
 
-    if (resJson.shortUrl) {
-      setShortUrl(resJson.shortUrl);
+    if (!resJson.shortUrl) {
+      return newToast({
+        text: "There was a problem generating your shortUrl",
+        type: "error",
+      });
     }
+
+    setShortUrl(resJson.shortUrl);
   };
 
   return (
@@ -93,7 +106,7 @@ export function ShortenUrlForm() {
               </div>
             )}
           </div>
-          <Button>Shorten!</Button>
+          <Button isLoading={isLoading}>Shorten!</Button>
         </>
       ) : (
         <>
