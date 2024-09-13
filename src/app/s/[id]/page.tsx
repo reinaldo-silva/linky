@@ -1,15 +1,15 @@
-import { initDB } from "@/db/db";
+import { initDB } from "@/lib/redis";
 import { ensureHttp } from "@/utils/ensureHttp";
 import { redirect } from "next/navigation";
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
   const { id } = params;
 
-  const db = await initDB();
-  const entry = db.data.urls.find((urlEntry) => urlEntry.id === id);
+  const { getUrlById } = initDB();
+  const entry = await getUrlById(id);
 
   if (entry) {
-    const url = ensureHttp(entry.url);
+    const url = ensureHttp(entry);
 
     return redirect(url);
   } else {

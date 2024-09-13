@@ -1,11 +1,12 @@
-import { type NextRequest } from "next/server";
+import { initDB } from "@/lib/redis";
 import { nanoid } from "nanoid";
-import { initDB } from "@/db/db";
+import { type NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
 
   const url = searchParams.get("url");
+  const exp = searchParams.get("exp");
 
   if (!url) {
     return Response.json({ message: "A URL é necessária" }, { status: 400 });
@@ -13,18 +14,9 @@ export async function GET(request: NextRequest) {
 
   const id = nanoid(8);
 
-  const db = await initDB();
+  const { saveUrl } = initDB();
 
-  const urlFound = db.data.urls.find((urlItem) => urlItem.url === url);
-
-  if (urlFound) {
-    const shortUrl = `${request.headers.get("host")}/s/${urlFound.id}`;
-
-    return Response.json({ message: "Linky your url!", shortUrl });
-  }
-
-  db.data.urls.push({ id, url });
-  db.write();
+  await saveUrl({ id, url, exp: exp && !isNaN(Number(exp)) ? Number(exp) : 1 });
 
   const shortUrl = `${request.headers.get("host")}/s/${id}`;
 
