@@ -77,7 +77,7 @@ export function ShortenUrlForm() {
               value={url}
               onChange={(e) => setUrl(e.currentTarget.value)}
               placeholder="google.com"
-              className="bg-transparent border-l-2 w-full border-zinc-400 ml-3 outline-none px-3 placeholder:font-semibold"
+              className="bg-transparent rounded-none border-l-2 w-full border-zinc-400 ml-3 outline-none px-3 placeholder:font-semibold"
             />
           </div>
           <div className="flex justify-end flex-col gap-2">

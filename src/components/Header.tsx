@@ -27,7 +27,7 @@ export function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="fixed flex items-center top-0 gap-3 left-1/2 -translate-x-1/2 p-8">
+    <header className="fixed flex items-center top-0 gap-3 left-1/2 -translate-x-1/2 p-8 py-6 bg-zinc-50/40 backdrop-blur-sm border-b-2">
       {links.map((link, index) => {
         const Icon = link.icon;
         return (
@@ -55,7 +55,7 @@ export function Header() {
 
 export function HeaderLoading() {
   return (
-    <header className="fixed flex items-center top-0 gap-3 left-1/2 -translate-x-1/2 p-8">
+    <header className="fixed flex items-center top-0 gap-3 left-1/2 -translate-x-1/2 p-8 py-6 bg-zinc-50/40 backdrop-blur-sm border-b-2">
       {links.map((link, index) => {
         return (
           <Fragment key={index}>
