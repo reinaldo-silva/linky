@@ -1,4 +1,4 @@
-# Linky
+# Linky!
 
 **Linky** é um encurtador de URLs que permite encurtar links de forma simples e eficiente.
 

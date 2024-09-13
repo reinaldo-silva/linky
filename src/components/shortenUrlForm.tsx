@@ -1,4 +1,5 @@
 "use client";
+import { Button } from "@/components/Button";
 import { copyToClipboard } from "@/utils/copyToClipboard";
 import { Clipboard, Link2 } from "lucide-react";
 import { FormEvent, useState } from "react";
@@ -41,25 +42,23 @@ export function ShortenUrlForm() {
               className="bg-transparent border-l-2 w-full border-zinc-400 ml-3 outline-none px-3 placeholder:font-semibold"
             />
           </div>
-          <button className="bg-zinc-800 text-zinc-50 font-semibold p-4 rounded-2xl">
-            Shorten!
-          </button>
+          <Button>Shorten!</Button>
         </>
       ) : (
         <>
           <span className="bg-zinc-200 p-4 font-semibold rounded-2xl border border-zinc-300">
             {shortUrl}
           </span>
-          <button
+          <Button
             onClick={() => copyToClipboard(shortUrl)}
             type="button"
-            className="bg-sky-600 flex font-semibold items-center justify-center text-zinc-50 p-4 rounded-2xl gap-2"
+            className="!bg-sky-600"
           >
             Copy to clipboard
             <Clipboard size={20} />
-          </button>
-          <button
-            className="p-4 hover:underline font-semibold"
+          </Button>
+          <Button
+            className="hover:underline !bg-transparent text-zinc-800"
             type="button"
             onClick={() => {
               setShortUrl("");
@@ -67,7 +66,7 @@ export function ShortenUrlForm() {
             }}
           >
             Generate a new linky!
-          </button>
+          </Button>
         </>
       )}
     </form>
