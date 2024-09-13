@@ -1,6 +1,6 @@
 import { initDB } from "@/db/db";
 import { ensureHttp } from "@/utils/ensureHttp";
-import { notFound, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
 
     return redirect(url);
   } else {
-    return notFound();
+    return redirect("/url-not-found");
   }
 }
 
