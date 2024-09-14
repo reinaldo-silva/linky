@@ -131,7 +131,7 @@ export function ShortenUrlForm() {
             variant={ButtonVariants.GHOST}
             type="button"
             onClick={closeModal}
-            className="mt-4"
+            className="mt-4 !w-auto"
           >
             Generate a new linky!
           </Button>
