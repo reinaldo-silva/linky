@@ -1,10 +1,10 @@
 "use client";
 import { Button, ButtonVariants } from "@/components/Button";
-import { copyToClipboard } from "@/utils/copyToClipboard";
 import { isValidURL } from "@/utils/isValidUrl";
 import { newToast } from "@/utils/newToast";
 import { Clipboard, Link2, TimerReset } from "lucide-react";
 import { FormEvent, useState } from "react";
+import { CopyAnimation } from "./CopyAnimation";
 import { Dropdown } from "./Dropdown";
 import { Input } from "./Input";
 import { Radio } from "./Radio";
@@ -54,7 +54,7 @@ export function ShortenUrlForm() {
 
   return (
     <div className="flex flex-col w-full sm:max-w-[460px] gap-4 mt-8">
-      {!shortUrl ? (
+      {shortUrl ? (
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <Input
             icon={Link2}
@@ -98,17 +98,15 @@ export function ShortenUrlForm() {
         </form>
       ) : (
         <>
-          <span className="bg-zinc-200 p-4 font-semibold rounded-2xl border border-zinc-300">
-            {shortUrl}
-          </span>
-          <Button
-            variant={ButtonVariants.SECONDARY}
-            type="button"
-            onClick={() => copyToClipboard(shortUrl)}
-          >
-            Copy to clipboard
-            <Clipboard size={20} />
-          </Button>
+          <div className="flex gap-2 items-center">
+            <span className="bg-zinc-200 flex-1 p-4 select-all font-semibold rounded-2xl border border-zinc-300">
+              {shortUrl || "Nothing here!"}
+            </span>
+            <CopyAnimation textToCopy={shortUrl}>
+              <span className="hidden sm:flex">Copy</span>
+              <Clipboard size={20} />
+            </CopyAnimation>
+          </div>
           <Button
             variant={ButtonVariants.GHOST}
             type="button"
