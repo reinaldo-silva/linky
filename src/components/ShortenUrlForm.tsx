@@ -3,10 +3,10 @@ import { Button, ButtonVariants } from "@/components/Button";
 import { copyToClipboard } from "@/utils/copyToClipboard";
 import { isValidURL } from "@/utils/isValidUrl";
 import { newToast } from "@/utils/newToast";
-import { animated, useSpring } from "@react-spring/web";
-import { ChevronDown, Clipboard, Link2, TimerReset } from "lucide-react";
-import { FormEvent, useEffect, useRef, useState } from "react";
-import { zinc } from "tailwindcss/colors";
+import { Clipboard, Link2, TimerReset } from "lucide-react";
+import { FormEvent, useState } from "react";
+import { Dropdown } from "./Dropdown";
+import { Input } from "./Input";
 import { Radio } from "./Radio";
 
 const expirationOptions = [
@@ -19,23 +19,7 @@ export function ShortenUrlForm() {
   const [url, setUrl] = useState("");
   const [shortUrl, setShortUrl] = useState("");
   const [expirationIndex, setExpirationIndex] = useState(0);
-  const [settingOpen, setSettingOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
-  const contentRef = useRef<HTMLDivElement | null>(null);
-  const [height, setHeight] = useState<number>(0);
-
-  useEffect(() => {
-    if (contentRef.current) {
-      setHeight(contentRef.current.scrollHeight);
-    }
-  }, [settingOpen]);
-
-  const { height: animatedHeight, opacity } = useSpring({
-    height: settingOpen ? height + 2 : 0,
-    opacity: settingOpen ? 1 : 0,
-    config: { tension: 220, friction: 120, duration: 250 }, // Ajuste para suavidade
-  });
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -72,56 +56,42 @@ export function ShortenUrlForm() {
     <div className="flex flex-col w-full sm:max-w-[460px] gap-4 mt-8">
       {!shortUrl ? (
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <div className="bg-zinc-200 flex items-center p-3 py-4 rounded-2xl border border-zinc-300">
-            <Link2 color={zinc[600]} strokeWidth={3} />
-            <input
-              value={url}
-              onChange={(e) => setUrl(e.currentTarget.value)}
-              placeholder="google.com"
-              className="bg-transparent rounded-none border-l-2 w-full border-zinc-400 ml-3 outline-none px-3 placeholder:font-semibold"
-            />
-          </div>
-          <div className="flex justify-end flex-col gap-2">
-            <button
-              onClick={() => setSettingOpen((oldValue) => !oldValue)}
-              type="button"
-              className="flex items-center gap-1 justify-end"
-            >
+          <Input
+            icon={Link2}
+            value={url}
+            onChange={(e) => setUrl(e.currentTarget.value)}
+            placeholder="google.com"
+          />
+
+          <Dropdown.Root>
+            <Dropdown.Trigger>
               <span className="bg-zinc-800 flex gap-2 items-center text-zinc-200 text-sm p-1 px-3 rounded-2xl">
                 <TimerReset size={18} strokeWidth={3} />
                 <p className="font-semibold">
                   {expirationOptions[expirationIndex].description}
                 </p>
               </span>
-              <ChevronDown />
-            </button>
+            </Dropdown.Trigger>
 
-            <animated.div
-              style={{ overflow: "hidden", height: animatedHeight, opacity }}
-            >
-              <div
-                ref={contentRef}
-                className="flex bg-zinc-200 border border-zinc-300 rounded-xl"
-              >
-                {expirationOptions.map((op, index) => (
-                  <Radio
-                    contentClassName="flex-1 border-r p-3 last:border-none border-zinc-400"
-                    label={op.description}
-                    id={`${op.value}-${index}`}
-                    key={index}
-                    checked={
-                      expirationOptions[expirationIndex].value === op.value
-                    }
-                    value={op.value}
-                    name="expiration"
-                    onChange={() => {
-                      setExpirationIndex(index);
-                    }}
-                  />
-                ))}
-              </div>
-            </animated.div>
-          </div>
+            <Dropdown.Content className="flex bg-zinc-200 border border-zinc-300 rounded-xl">
+              {expirationOptions.map((op, index) => (
+                <Radio
+                  contentClassName="flex-1 border-r p-3 last:border-none border-zinc-400"
+                  label={op.description}
+                  id={`${op.value}-${index}`}
+                  key={index}
+                  checked={
+                    expirationOptions[expirationIndex].value === op.value
+                  }
+                  value={op.value}
+                  name="expiration"
+                  onChange={() => {
+                    setExpirationIndex(index);
+                  }}
+                />
+              ))}
+            </Dropdown.Content>
+          </Dropdown.Root>
           <Button type="submit" isLoading={isLoading}>
             Shorten!
           </Button>
