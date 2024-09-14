@@ -4,9 +4,11 @@ import { isValidURL } from "@/utils/isValidUrl";
 import { newToast } from "@/utils/newToast";
 import { Clipboard, Link2, TimerReset } from "lucide-react";
 import { FormEvent, useState } from "react";
+import { Badge } from "./Badge";
 import { CopyAnimation } from "./CopyAnimation";
 import { Dropdown } from "./Dropdown";
 import { Input } from "./Input";
+import { ModalSlide } from "./ModalSlide";
 import { Radio } from "./Radio";
 
 const expirationOptions = [
@@ -20,6 +22,7 @@ export function ShortenUrlForm() {
   const [shortUrl, setShortUrl] = useState("");
   const [expirationIndex, setExpirationIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -50,55 +53,72 @@ export function ShortenUrlForm() {
     }
 
     setShortUrl(resJson.shortUrl);
+    setModalIsOpen(true);
   };
+
+  function closeModal() {
+    setShortUrl("");
+    setUrl("");
+    setModalIsOpen(false);
+  }
 
   return (
     <div className="flex flex-col w-full sm:max-w-[460px] gap-4 mt-8">
-      {shortUrl ? (
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <Input
-            icon={Link2}
-            value={url}
-            onChange={(e) => setUrl(e.currentTarget.value)}
-            placeholder="google.com"
-          />
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <Input
+          icon={Link2}
+          value={url}
+          onChange={(e) => setUrl(e.currentTarget.value)}
+          placeholder="google.com"
+        />
 
-          <Dropdown.Root>
-            <Dropdown.Trigger>
-              <span className="bg-zinc-800 flex gap-2 items-center text-zinc-200 text-sm p-1 px-3 rounded-2xl">
+        <Dropdown.Root>
+          <Dropdown.Trigger>
+            <Badge>
+              <TimerReset size={18} strokeWidth={3} />
+              <p className="font-semibold">
+                {expirationOptions[expirationIndex].description}
+              </p>
+            </Badge>
+          </Dropdown.Trigger>
+
+          <Dropdown.Content className="flex bg-zinc-200 border border-zinc-300 rounded-xl">
+            {expirationOptions.map((op, index) => (
+              <Radio
+                contentClassName="flex-1 border-r p-3 last:border-none border-zinc-400"
+                label={op.description}
+                id={`${op.value}-${index}`}
+                key={index}
+                checked={expirationOptions[expirationIndex].value === op.value}
+                value={op.value}
+                name="expiration"
+                onChange={() => {
+                  setExpirationIndex(index);
+                }}
+              />
+            ))}
+          </Dropdown.Content>
+        </Dropdown.Root>
+        <Button type="submit" isLoading={isLoading}>
+          Shorten!
+        </Button>
+      </form>
+
+      <ModalSlide isOpen={modalIsOpen} closeModal={closeModal}>
+        <div className="w-full sm:max-w-[460px] flex flex-col items-center justify-center">
+          <div className="mb-6 flex flex-col items-center">
+            <span className="text-zinc-500 mt-2">Since your link is small</span>
+            <div className="flex items-center mt-6 gap-2">
+              <p>Your link will expire in</p>
+              <Badge>
                 <TimerReset size={18} strokeWidth={3} />
                 <p className="font-semibold">
                   {expirationOptions[expirationIndex].description}
                 </p>
-              </span>
-            </Dropdown.Trigger>
-
-            <Dropdown.Content className="flex bg-zinc-200 border border-zinc-300 rounded-xl">
-              {expirationOptions.map((op, index) => (
-                <Radio
-                  contentClassName="flex-1 border-r p-3 last:border-none border-zinc-400"
-                  label={op.description}
-                  id={`${op.value}-${index}`}
-                  key={index}
-                  checked={
-                    expirationOptions[expirationIndex].value === op.value
-                  }
-                  value={op.value}
-                  name="expiration"
-                  onChange={() => {
-                    setExpirationIndex(index);
-                  }}
-                />
-              ))}
-            </Dropdown.Content>
-          </Dropdown.Root>
-          <Button type="submit" isLoading={isLoading}>
-            Shorten!
-          </Button>
-        </form>
-      ) : (
-        <>
-          <div className="flex gap-2 items-center">
+              </Badge>
+            </div>
+          </div>
+          <div className="flex gap-2 items-center w-full">
             <span className="bg-zinc-200 flex-1 p-4 select-all font-semibold rounded-2xl border border-zinc-300">
               {shortUrl || "Nothing here!"}
             </span>
@@ -110,15 +130,13 @@ export function ShortenUrlForm() {
           <Button
             variant={ButtonVariants.GHOST}
             type="button"
-            onClick={() => {
-              setShortUrl("");
-              setUrl("");
-            }}
+            onClick={closeModal}
+            className="mt-4"
           >
             Generate a new linky!
           </Button>
-        </>
-      )}
+        </div>
+      </ModalSlide>
     </div>
   );
 }
