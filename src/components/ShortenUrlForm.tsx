@@ -119,7 +119,7 @@ export function ShortenUrlForm() {
             </div>
           </div>
           <div className="flex gap-2 items-center w-full">
-            <span className="bg-zinc-200 flex-1 p-4 select-all font-semibold rounded-2xl border border-zinc-300">
+            <span className="bg-zinc-200 text-sm flex-1 p-4 truncate select-all font-semibold rounded-2xl border border-zinc-300">
               {shortUrl || "Nothing here!"}
             </span>
             <CopyAnimation textToCopy={shortUrl}>
