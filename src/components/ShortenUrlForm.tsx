@@ -7,6 +7,7 @@ import { animated, useSpring } from "@react-spring/web";
 import { ChevronDown, Clipboard, Link2, TimerReset } from "lucide-react";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { zinc } from "tailwindcss/colors";
+import { Radio } from "./Radio";
 
 const expirationOptions = [
   { value: 1, description: "1 day" },
@@ -103,24 +104,20 @@ export function ShortenUrlForm() {
                 className="flex bg-zinc-200 border border-zinc-300 rounded-xl"
               >
                 {expirationOptions.map((op, index) => (
-                  <label
+                  <Radio
+                    contentClassName="flex-1 border-r p-3 last:border-none border-zinc-400"
+                    label={op.description}
+                    id={`${op.value}-${index}`}
                     key={index}
-                    className="text-zinc-800 font-semibold select-none flex-1 border-r last:border-none p-3 border-zinc-400 cursor-pointer"
-                  >
-                    <input
-                      className="focus:ring-zinc-800 text-zinc-800"
-                      checked={
-                        expirationOptions[expirationIndex].value === op.value
-                      }
-                      type="radio"
-                      value={op.value}
-                      name="expiration"
-                      onChange={() => {
-                        setExpirationIndex(index);
-                      }}
-                    />{" "}
-                    {op.description}
-                  </label>
+                    checked={
+                      expirationOptions[expirationIndex].value === op.value
+                    }
+                    value={op.value}
+                    name="expiration"
+                    onChange={() => {
+                      setExpirationIndex(index);
+                    }}
+                  />
                 ))}
               </div>
             </animated.div>
