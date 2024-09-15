@@ -7,7 +7,7 @@ export default function Home() {
     <div className="bg-zinc-50 h-svh flex flex-col items-center justify-center">
       <ClientOnly
         fallback={
-          <div className="animate-pulse bg-zinc-300 rounded-xl w-[138px] h-[42px]" />
+          <div className="animate-pulse bg-zinc-200 rounded-xl w-full max-w-3xl h-[42px]" />
         }
       >
         <Logo whitAnimation />

@@ -15,7 +15,9 @@ export function ModalSlide({ children, isOpen, closeModal }: ModalSlideProps) {
   const divRef = useRef<HTMLDivElement>(null);
 
   useClickOutside(divRef, () => {
-    closeModal();
+    if (isOpen) {
+      closeModal();
+    }
   });
 
   const transitionSlide = useTransition(isOpen, {
@@ -52,14 +54,13 @@ export function ModalSlide({ children, isOpen, closeModal }: ModalSlideProps) {
               )}
             >
               <button
-                onClick={() => {
-                  closeModal();
-                }}
+                onClick={closeModal}
+                type="button"
                 className="absolute top-4 right-4"
               >
                 <X />
               </button>
-              <div className="absolute border-[3px] rotate-3 border-zinc-800 -top-8 bg-zinc-50 p-3 rounded-2xl">
+              <div className="absolute shadow-md border-[3px] rotate-3 border-zinc-800 -top-8 bg-zinc-50 p-3 rounded-2xl">
                 <Logo />
               </div>
               {children}

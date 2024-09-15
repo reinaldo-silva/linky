@@ -59,7 +59,7 @@ export function HeaderLoading() {
       {links.map((link, index) => {
         return (
           <Fragment key={index}>
-            <div className="size-11 bg-zinc-300 animate-pulse rounded-xl" />
+            <div className="size-11 bg-zinc-200 animate-pulse rounded-xl" />
             {link.div && <div className="border border-zinc-800 h-9" />}
           </Fragment>
         );
