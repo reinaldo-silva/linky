@@ -1,15 +1,22 @@
 "use client";
+import { Badge } from "@/components/Badge";
 import { Button, ButtonVariants } from "@/components/Button";
+import { CopyAnimation } from "@/components/CopyAnimation";
+import { Dropdown } from "@/components/Dropdown";
+import { Input } from "@/components/Input";
+import { ModalSlide } from "@/components/ModalSlide";
+import { Radio } from "@/components/Radio";
+import useClipboardCheck from "@/hook/useClipboardCheck";
 import { isValidURL } from "@/utils/isValidUrl";
 import { newToast } from "@/utils/newToast";
-import { Clipboard, Link2, TimerReset } from "lucide-react";
+import {
+  Clipboard,
+  ClipboardPaste,
+  CornerLeftUp,
+  Link2,
+  TimerReset,
+} from "lucide-react";
 import { FormEvent, useState } from "react";
-import { Badge } from "./Badge";
-import { CopyAnimation } from "./CopyAnimation";
-import { Dropdown } from "./Dropdown";
-import { Input } from "./Input";
-import { ModalSlide } from "./ModalSlide";
-import { Radio } from "./Radio";
 
 const expirationOptions = [
   { value: 1, description: "1 day" },
@@ -23,6 +30,8 @@ export function ShortenUrlForm() {
   const [expirationIndex, setExpirationIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const { clipboardContent, hasClipboardContent, checkClipboard, resetData } =
+    useClipboardCheck();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -57,6 +66,7 @@ export function ShortenUrlForm() {
   };
 
   function closeModal() {
+    checkClipboard();
     setShortUrl("");
     setUrl("");
     setModalIsOpen(false);
@@ -65,12 +75,31 @@ export function ShortenUrlForm() {
   return (
     <div className="flex flex-col w-full sm:max-w-[460px] gap-4 mt-8">
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <Input
-          icon={Link2}
-          value={url}
-          onChange={(e) => setUrl(e.currentTarget.value)}
-          placeholder="google.com"
-        />
+        <div className="flex flex-col gap-1">
+          <Input
+            icon={Link2}
+            value={url}
+            onChange={(e) => setUrl(e.currentTarget.value)}
+            placeholder="google.com"
+          />
+
+          {hasClipboardContent && clipboardContent && (
+            <button
+              className="flex gap-1 text-sky-500 hover:text-sky-600 self-end items-center hover:underline"
+              type="button"
+              onClick={() => {
+                setUrl(clipboardContent);
+                resetData();
+              }}
+            >
+              <CornerLeftUp size={12} strokeWidth={3} />
+              <span className="text-xs font-bold">
+                Colar texto da área de transferência
+              </span>
+              <ClipboardPaste size={12} strokeWidth={3} />
+            </button>
+          )}
+        </div>
 
         <Dropdown.Root>
           <Dropdown.Trigger>

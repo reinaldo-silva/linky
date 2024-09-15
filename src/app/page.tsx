@@ -13,7 +13,17 @@ export default function Home() {
         <Logo whitAnimation />
       </ClientOnly>
       <p className="text-zinc-500 mt-2">Shorten and manage your URLs easily.</p>
-      <ShortenUrlForm />
+      <ClientOnly
+        fallback={
+          <div className="flex flex-col w-full items-end sm:max-w-[460px] gap-4 mt-8">
+            <div className="animate-pulse bg-zinc-200 rounded-xl w-full h-[58px]" />
+            <div className="animate-pulse bg-zinc-200 rounded-xl w-[105px] h-[28px]" />
+            <div className="animate-pulse bg-zinc-200 rounded-xl w-full h-[56px]" />
+          </div>
+        }
+      >
+        <ShortenUrlForm />
+      </ClientOnly>
     </div>
   );
 }

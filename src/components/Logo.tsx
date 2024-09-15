@@ -22,9 +22,9 @@ export function Logo({ whitAnimation = false }: LogoProps) {
     from: { animatedText: 0 },
     reset: true,
     reverse: showLinky,
-    delay: 500,
+    delay: 250,
     onRest: () => setShowLinky(true),
-    config: { duration: showLinky ? 3000 : 2000 },
+    config: { duration: showLinky ? 1500 : 2000 },
   });
 
   return (
