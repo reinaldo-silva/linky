@@ -30,7 +30,7 @@ export function ShortenUrlForm() {
   const [expirationIndex, setExpirationIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const { clipboardContent, hasClipboardContent, checkClipboard, resetData } =
+  const { clipboardContent, hasClipboardContent, resetData } =
     useClipboardCheck();
 
   const handleSubmit = async (e: FormEvent) => {
@@ -66,7 +66,6 @@ export function ShortenUrlForm() {
   };
 
   function closeModal() {
-    checkClipboard();
     setShortUrl("");
     setUrl("");
     setModalIsOpen(false);
@@ -94,7 +93,7 @@ export function ShortenUrlForm() {
             >
               <CornerLeftUp size={12} strokeWidth={3} />
               <span className="text-xs font-bold">
-                Colar texto da área de transferência
+                Paste text from clipboard
               </span>
               <ClipboardPaste size={12} strokeWidth={3} />
             </button>

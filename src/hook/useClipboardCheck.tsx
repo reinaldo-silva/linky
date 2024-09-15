@@ -1,4 +1,5 @@
 "use client";
+import useWindowFocus from "@/hook/useWindowFocus";
 import { useEffect, useState } from "react";
 
 const useClipboardCheck = () => {
@@ -23,6 +24,8 @@ const useClipboardCheck = () => {
       console.error("Erro ao acessar a área de transferência:", err);
     }
   };
+
+  useWindowFocus(checkClipboard);
 
   useEffect(() => {
     checkClipboard();
