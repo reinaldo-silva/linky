@@ -1,7 +1,10 @@
 import { Badge } from "@/components/Badge";
 import { TerminalCode } from "@/components/TerminalCode";
+import { headers } from "next/headers";
 
 export default function Docs() {
+  const host = headers().get("host");
+
   return (
     <div className="h-svh flex flex-col items-start overflow-x-hidden flex-1 mx-auto pt-28 pb-6 overflow-scroll space-y-5 scrollbar-hide">
       <div className="flex flex-col items-start">
@@ -25,6 +28,11 @@ export default function Docs() {
         <Badge>POST</Badge>
         <Badge variant="outline">/api/shorten</Badge>
       </div>
+
+      <p>
+        The request method should be a POST and will accept a JSON object
+        containing the following data:
+      </p>
 
       <div className="ml-2 border-l-2 px-4 w-full">
         <ul className="space-y-5">
@@ -72,6 +80,18 @@ export default function Docs() {
             </div>
           </li>
         </ul>
+      </div>
+
+      <div className="w-full">
+        <strong>Complete example:</strong>
+        <TerminalCode>
+          <p className="text-gray-500">{`// POST - ${host}/api/shorten`}</p>
+          <p className="text-gray-500">{`// body:`}</p>
+          <p>{`{`}</p>
+          <p>{`     "url": "google.com"`}</p>
+          <p>{`     "exp": 7`}</p>
+          <p>{`}`}</p>
+        </TerminalCode>
       </div>
 
       <h2 className="font-semibold border-b text-xl w-full">Response</h2>
