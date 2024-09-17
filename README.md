@@ -5,10 +5,22 @@
 ## Funcionalidades
 
 - Encurte URLs longas em links curtos e fáceis de compartilhar.
+- Defina o tempo de expiração dos links encurtados de forma opcional.
+- Gere URLs únicas de forma rápida e segura.
 
 ## Tecnologias Utilizadas
 
-- **Frontend:** Next.js, React, Tailwind CSS
+### Frontend
+
+- **Next.js 14**: Utilizado como framework para a aplicação frontend, garantindo renderização eficiente e experiência otimizada.
+- **React**: Biblioteca JavaScript utilizada para construir interfaces de usuário interativas e dinâmicas.
+- **Tailwind CSS**: Framework de CSS utilitário que facilita a criação de layouts responsivos e estilizados.
+- **React Spring**: Biblioteca de animações usada para criar transições suaves e animações no frontend.
+
+### Backend
+
+- **nanoid**: Utilizado para gerar identificadores únicos e seguros que compõem as URLs encurtadas.
+- **Upstash Redis**: O Redis como serviço foi integrado com o **Upstash** para armazenar e gerenciar os links encurtados, oferecendo uma solução escalável e de baixa latência para a aplicação.
 
 ## Como Instalar e Rodar o Projeto Localmente
 
@@ -41,6 +53,20 @@
    ```
    http://localhost:3000
    ```
+
+## Utilizando o Upstash
+
+Para utilizar o Upstash como solução de armazenamento Redis, siga os passos abaixo:
+
+1. Crie uma conta no [Upstash](https://upstash.com/).
+2. Crie um arquivo `.env` na raiz do projeto e adicione as seguintes variáveis de ambiente:
+
+   ```bash
+   UPSTASH_REDIS_REST_URL=<sua-url-upstash>
+   UPSTASH_REDIS_REST_TOKEN=<seu-token-upstash>
+   ```
+
+3. Após configurar as variáveis de ambiente, o projeto estará pronto para utilizar o Upstash Redis como banco de dados para os links encurtados.
 
 ## Como Contribuir
 
