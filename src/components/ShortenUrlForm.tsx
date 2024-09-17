@@ -110,10 +110,10 @@ export function ShortenUrlForm() {
             </Badge>
           </Dropdown.Trigger>
 
-          <Dropdown.Content className="flex bg-zinc-200 border border-zinc-300 rounded-xl">
+          <Dropdown.Content className="flex bg-white border border-zinc-200 rounded-xl">
             {expirationOptions.map((op, index) => (
               <Radio
-                contentClassName="flex-1 border-r p-3 last:border-none border-zinc-400"
+                contentClassName="flex-1 border-r p-3 last:border-none border-zinc-300"
                 label={op.description}
                 id={`${op.value}-${index}`}
                 key={index}
