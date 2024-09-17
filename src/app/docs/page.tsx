@@ -129,7 +129,7 @@ export default function Docs() {
         <TerminalCode>
           <p>{`{`}</p>
           <p>{`     "message": "Linky your url!"`}</p>
-          <p>{`     "shortUrl": "localhost:3000/s/JUli3GrR"`}</p>
+          <p>{`     "shortUrl": "${host}/s/JUli3GrR"`}</p>
           <p>{`}`}</p>
         </TerminalCode>
       </div>
