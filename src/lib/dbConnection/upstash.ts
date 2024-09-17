@@ -1,13 +1,9 @@
 import { Redis } from "@upstash/redis";
+import { IDBConnection, URL } from "./interface";
 
-type URL = {
-  id: string;
-  url: string;
-  exp: number;
-};
-
-export function initDB() {
+export function dbConnectionUpstash(): IDBConnection {
   const oneDaySeconds = 24 * 60 * 60;
+
   const redis = new Redis({
     url: process.env.UPSTASH_REDIS_REST_URL,
     token: process.env.UPSTASH_REDIS_REST_TOKEN,
@@ -19,12 +15,12 @@ export function initDB() {
     return url;
   }
 
-  async function saveUrl({ exp, id, url }: URL): Promise<URL | null> {
+  async function saveUrl({ exp, id, url }: URL): Promise<URL> {
     await redis.set(id, url);
     await redis.expire(id, exp * oneDaySeconds);
 
     return { exp, id, url };
   }
 
-  return { redis, getUrlById, saveUrl };
+  return { getUrlById, saveUrl };
 }

@@ -1,4 +1,4 @@
-import { initDB } from "@/lib/redis";
+import { initDB } from "@/lib/dbConnection";
 import { ensureHttp } from "@/utils/ensureHttp";
 import { redirect } from "next/navigation";
 

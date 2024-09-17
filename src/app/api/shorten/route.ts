@@ -1,4 +1,4 @@
-import { initDB } from "@/lib/redis";
+import { initDB } from "@/lib/dbConnection";
 import { nanoid } from "nanoid";
 import { NextResponse, type NextRequest } from "next/server";
 

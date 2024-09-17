@@ -22,8 +22,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="bg-zinc-50">
-      <body className={`${inter.variable} antialiased px-6`}>
+    <html lang="en" className="bg-zinc-50 flex justify-center">
+      <body
+        className={`${inter.variable} antialiased px-6 w-full sm:max-w-[460px] md:max-w-3xl`}
+      >
         <Providers>
           <ClientOnly fallback={<HeaderLoading />}>
             <Header />

@@ -5,3 +5,17 @@
 * {
   @apply font-sans;
 }
+
+/* Definir a scroll bar invisível */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Ocultar barra no WebKit (Chrome, Safari) */
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none; /* Ocultar barra no IE e Edge */
+  scrollbar-width: none; /* Ocultar barra no Firefox */
+}
+
+.code-text {
+  @apply font-mono bg-zinc-200 p-1 py-0.5 rounded-md border border-zinc-300;
+}

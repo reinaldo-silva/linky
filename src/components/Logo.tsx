@@ -37,7 +37,7 @@ export function Logo({ whitAnimation = false }: LogoProps) {
           "ml-2 truncate flex-1 text-ellipsis max-w-[260px] sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-3xl",
           {
             "text-xl font-mono": !showLinky && whitAnimation,
-            "font-sans text-3xl font-semibold ": showLinky || !whitAnimation,
+            "font-sans text-3xl font-semibold": showLinky || !whitAnimation,
           }
         )}
       >
