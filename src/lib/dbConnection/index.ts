@@ -1,6 +1,6 @@
 import { IDBConnection } from "./interface";
-import { dbConnectionUpstash } from "./upstash";
+import { DbConnectionUpstash } from "./upstash";
 
-export function initDB(): IDBConnection {
-  return dbConnectionUpstash();
-}
+const initDB: IDBConnection = new DbConnectionUpstash();
+
+export default initDB;

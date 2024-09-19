@@ -1,4 +1,4 @@
-import { initDB } from "@/lib/dbConnection";
+import initDB from "@/lib/dbConnection";
 import { nanoid } from "nanoid";
 import { NextResponse, type NextRequest } from "next/server";
 
@@ -17,9 +17,7 @@ export async function POST(request: NextRequest) {
 
     const id = nanoid(8);
 
-    const { saveUrl } = initDB();
-
-    await saveUrl({
+    await initDB.saveUrl({
       id,
       url,
       exp: exp && !isNaN(Number(exp)) ? Number(exp) : 1,

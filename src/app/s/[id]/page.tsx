@@ -1,12 +1,11 @@
-import { initDB } from "@/lib/dbConnection";
+import initDB from "@/lib/dbConnection";
 import { ensureHttp } from "@/utils/ensureHttp";
 import { redirect } from "next/navigation";
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
   const { id } = params;
 
-  const { getUrlById } = initDB();
-  const entry = await getUrlById(id);
+  const entry = await initDB.getUrlById(id);
 
   if (entry) {
     const url = ensureHttp(entry);

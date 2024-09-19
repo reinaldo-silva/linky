@@ -1,26 +1,44 @@
 import { Redis } from "@upstash/redis";
 import { IDBConnection, URL } from "./interface";
 
-export function dbConnectionUpstash(): IDBConnection {
-  const oneDaySeconds = 24 * 60 * 60;
+export class DbConnectionUpstash implements IDBConnection {
+  oneDaySeconds = 24 * 60 * 60;
+  redis: Redis;
 
-  const redis = new Redis({
-    url: process.env.UPSTASH_REDIS_REST_URL,
-    token: process.env.UPSTASH_REDIS_REST_TOKEN,
-  });
+  constructor() {
+    const redisUrl = process.env.UPSTASH_REDIS_REST_URL;
+    const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN;
 
-  async function getUrlById(key: string): Promise<string | null> {
-    const url = await redis.get<string>(key);
+    if (!redisUrl || !redisToken) {
+      throw new Error(
+        "Upstash Redis URL or Token is missing from environment variables"
+      );
+    }
 
-    return url;
+    this.redis = new Redis({
+      url: redisUrl,
+      token: redisToken,
+    });
   }
 
-  async function saveUrl({ exp, id, url }: URL): Promise<URL> {
-    await redis.set(id, url);
-    await redis.expire(id, exp * oneDaySeconds);
-
-    return { exp, id, url };
+  async getUrlById(key: string): Promise<string | null> {
+    try {
+      const url = await this.redis.get<string>(key);
+      return url;
+    } catch (error) {
+      console.error(`Error fetching URL with key ${key}:`, error);
+      return null;
+    }
   }
 
-  return { getUrlById, saveUrl };
+  async saveUrl({ exp, id, url }: URL): Promise<URL> {
+    try {
+      await this.redis.set(id, url);
+      await this.redis.expire(id, exp * this.oneDaySeconds);
+      return { exp, id, url };
+    } catch (error) {
+      console.error(`Error saving URL with id ${id}:`, error);
+      throw new Error("Failed to save URL to Redis");
+    }
+  }
 }
