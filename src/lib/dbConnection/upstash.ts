@@ -1,5 +1,5 @@
 import { Redis } from "@upstash/redis";
-import { IDBConnection, URL } from "./interface";
+import { IDBConnection } from "./interface";
 
 export class DbConnectionUpstash implements IDBConnection {
   oneDaySeconds = 24 * 60 * 60;
@@ -21,24 +21,14 @@ export class DbConnectionUpstash implements IDBConnection {
     });
   }
 
-  async getUrlById(key: string): Promise<string | null> {
-    try {
-      const url = await this.redis.get<string>(key);
-      return url;
-    } catch (error) {
-      console.error(`Error fetching URL with key ${key}:`, error);
-      return null;
-    }
+  async get<T = unknown>(key: string): Promise<T | null> {
+    const url = await this.redis.get<T>(key);
+    return url;
   }
 
-  async saveUrl({ exp, id, url }: URL): Promise<URL> {
-    try {
-      await this.redis.set(id, url);
-      await this.redis.expire(id, exp * this.oneDaySeconds);
-      return { exp, id, url };
-    } catch (error) {
-      console.error(`Error saving URL with id ${id}:`, error);
-      throw new Error("Failed to save URL to Redis");
-    }
+  async create<T = unknown>(key: string, data: T, exp: number): Promise<T> {
+    await this.redis.set(key, data);
+    await this.redis.expire(key, exp * this.oneDaySeconds);
+    return data;
   }
 }

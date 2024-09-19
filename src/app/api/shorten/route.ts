@@ -1,4 +1,4 @@
-import initDB from "@/lib/dbConnection";
+import { createUrl } from "@/lib/useCases";
 import { nanoid } from "nanoid";
 import { NextResponse, type NextRequest } from "next/server";
 
@@ -17,11 +17,11 @@ export async function POST(request: NextRequest) {
 
     const id = nanoid(8);
 
-    await initDB.saveUrl({
+    await createUrl.handle(
       id,
       url,
-      exp: exp && !isNaN(Number(exp)) ? Number(exp) : 1,
-    });
+      exp && !isNaN(Number(exp)) ? Number(exp) : 1
+    );
 
     const shortUrl = `${request.headers.get("host")}/s/${id}`;
 

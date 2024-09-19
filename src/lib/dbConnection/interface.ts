@@ -1,10 +1,4 @@
-export type URL = {
-  id: string;
-  url: string;
-  exp: number;
-};
-
 export interface IDBConnection {
-  getUrlById(key: string): Promise<string | null>;
-  saveUrl(url: URL): Promise<URL>;
+  get<T = unknown>(key: string): Promise<T | null>;
+  create<T = unknown>(key: string, data: T, exp: number): Promise<T>;
 }
