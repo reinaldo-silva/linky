@@ -1,4 +1,4 @@
-import { createUrl } from "@/lib/useCases";
+import { createUrl } from "@shared/index";
 import { nanoid } from "nanoid";
 import { NextResponse, type NextRequest } from "next/server";
 

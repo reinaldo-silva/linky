@@ -1,9 +1,9 @@
 import { Redis } from "@upstash/redis";
-import { IDBConnection } from "./interface";
+import { IRepository } from "@shared/repository/interface";
 
-export class DbConnectionUpstash implements IDBConnection {
-  oneDaySeconds = 24 * 60 * 60;
-  redis: Redis;
+export class UpstashRepository implements IRepository {
+  private oneDaySeconds = 24 * 60 * 60;
+  private redis: Redis;
 
   constructor() {
     const redisUrl = process.env.UPSTASH_REDIS_REST_URL;
@@ -11,7 +11,7 @@ export class DbConnectionUpstash implements IDBConnection {
 
     if (!redisUrl || !redisToken) {
       throw new Error(
-        "Upstash Redis URL or Token is missing from environment variables"
+        "Upstash Redis URL or Token iws missing from environment variables"
       );
     }
 

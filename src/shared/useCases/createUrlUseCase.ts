@@ -1,10 +1,10 @@
-import { IDBConnection } from "../dbConnection/interface";
-import { URL } from "./interface";
+import { IRepository } from "@shared/repository/interface";
+import { URL } from "@shared/useCases/interface";
 
 export class CreateUrlUseCase {
-  db: IDBConnection;
+  db: IRepository;
 
-  constructor(db: IDBConnection) {
+  constructor(db: IRepository) {
     this.db = db;
   }
 

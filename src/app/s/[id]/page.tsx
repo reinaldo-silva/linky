@@ -1,4 +1,4 @@
-import { getUrl } from "@/lib/useCases";
+import { getUrl } from "@shared/index";
 import { ensureHttp } from "@/utils/ensureHttp";
 import { redirect } from "next/navigation";
 

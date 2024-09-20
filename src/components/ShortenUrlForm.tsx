@@ -16,7 +16,7 @@ import {
   Link2,
   TimerReset,
 } from "lucide-react";
-import { FormEvent, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 
 const expirationOptions = [
   { value: 1, description: "1 day" },
@@ -25,6 +25,7 @@ const expirationOptions = [
 ];
 
 export function ShortenUrlForm() {
+  const inputRef = useRef<HTMLInputElement>(null);
   const [url, setUrl] = useState("");
   const [shortUrl, setShortUrl] = useState("");
   const [expirationIndex, setExpirationIndex] = useState(0);
@@ -61,6 +62,10 @@ export function ShortenUrlForm() {
       });
     }
 
+    if (inputRef.current) {
+      inputRef.current.blur();
+    }
+
     setShortUrl(resJson.shortUrl);
     setModalIsOpen(true);
   };
@@ -76,6 +81,7 @@ export function ShortenUrlForm() {
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="flex flex-col gap-1">
           <Input
+            ref={inputRef}
             icon={Link2}
             value={url}
             onChange={(e) => setUrl(e.currentTarget.value)}
