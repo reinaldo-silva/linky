@@ -1,15 +1,13 @@
 export function isValidURL(url: string): boolean {
-  const regex =
-    /^(https?:\/\/)?([\w\d-]+\.)+[a-z]{2,}(\/[\w\d-]*)*(\?.*)?(#.*)?$/i;
-
-  const fullURL =
-    url.startsWith("http://") || url.startsWith("https://")
-      ? url
-      : `http://${url}`;
-
   try {
+    const fullURL =
+      url.startsWith("http://") || url.startsWith("https://")
+        ? url
+        : `http://${url}`;
+
     const parsedURL = new URL(fullURL);
-    return regex.test(parsedURL.href);
+
+    return !!parsedURL;
   } catch (_) {
     return false;
   }
