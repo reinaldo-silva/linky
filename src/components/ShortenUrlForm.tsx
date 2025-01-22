@@ -7,7 +7,9 @@ import { Input } from "@/components/Input";
 import { ModalSlide } from "@/components/ModalSlide";
 import { Radio } from "@/components/Radio";
 import useClipboardCheck from "@/hook/useClipboardCheck";
+import { addDays } from "@/utils/date";
 import { isValidURL } from "@/utils/isValidUrl";
+import { saveUrl, UrlType } from "@/utils/localStorageUtils";
 import { newToast } from "@/utils/newToast";
 import {
   Clipboard,
@@ -66,6 +68,13 @@ export function ShortenUrlForm() {
       inputRef.current.blur();
     }
 
+    const newUrl: UrlType = {
+      url,
+      expiration: String(addDays(expirationOptions[expirationIndex].value)),
+      shortenUrl: resJson.shortUrl,
+    };
+
+    saveUrl(newUrl);
     setShortUrl(resJson.shortUrl);
     setModalIsOpen(true);
   };

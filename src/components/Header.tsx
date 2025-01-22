@@ -8,7 +8,7 @@ import { Fragment } from "react";
 const links = [
   { icon: House, to: "/", disabled: false },
   { icon: FileText, to: "/docs", disabled: false },
-  { icon: Logs, to: "/urls", disabled: true, div: true },
+  { icon: Logs, to: "/urls", disabled: false, div: true },
   {
     icon: Github,
     to: "http://github.com/reinaldo-silva/linky.git",
