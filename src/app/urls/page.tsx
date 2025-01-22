@@ -76,7 +76,7 @@ export default function Urls() {
                         removeUrl(row.shortenUrl);
                         getAllUrls();
                       }}
-                      className="flex justify-center items-center w-full"
+                      className="flex justify-center items-center w-full min-w-7"
                     >
                       <Trash size={16} strokeWidth={3} />
                     </button>
@@ -135,7 +135,7 @@ function AnimationCopyText({ shortenUrl }: { shortenUrl: string }) {
         }}
       >
         <p className="truncate font-medium">{shortenUrl}</p>
-        <Copy size={16} strokeWidth={3} />
+        <Copy size={16} strokeWidth={3} className="min-w-4" />
       </button>
     </>
   );
