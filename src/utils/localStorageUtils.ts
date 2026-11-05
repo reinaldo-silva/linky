@@ -4,36 +4,33 @@ interface UrlType {
   shortenUrl: string;
 }
 
-const saveUrl = (newUrl: UrlType): void => {
-  if (typeof window !== "undefined") {
-    const storedData = localStorage.getItem("urls");
-    const urls = storedData ? (JSON.parse(storedData) as UrlType[]) : [];
-    urls.push(newUrl);
-    localStorage.setItem("urls", JSON.stringify(urls));
+const STORAGE_KEY = "urls";
+
+const getUrls = (): UrlType[] => {
+  if (typeof window === "undefined") {
+    return [];
+  }
+
+  try {
+    const storedData = localStorage.getItem(STORAGE_KEY);
+    return storedData ? (JSON.parse(storedData) as UrlType[]) : [];
+  } catch {
+    return [];
   }
 };
 
-const getUrls = (): UrlType[] => {
-  if (typeof window !== "undefined") {
-    const storedData = localStorage.getItem("urls");
-    if (storedData) {
-      return JSON.parse(storedData) as UrlType[];
-    }
-  }
-  return [];
+const setUrls = (urls: UrlType[]): void => {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(urls));
+};
+
+const saveUrl = (newUrl: UrlType): void => {
+  setUrls([...getUrls(), newUrl]);
 };
 
 const removeUrl = (shortenUrl: string): void => {
-  if (typeof window !== "undefined") {
-    const storedData = localStorage.getItem("urls");
-    if (storedData) {
-      const urls = JSON.parse(storedData) as UrlType[];
-      const updatedUrls = urls.filter((url) => url.shortenUrl !== shortenUrl);
-      localStorage.setItem("urls", JSON.stringify(updatedUrls));
-    }
-  }
+  setUrls(getUrls().filter((url) => url.shortenUrl !== shortenUrl));
 };
 
 export type { UrlType };
 
-export { getUrls, saveUrl, removeUrl };
+export { getUrls, removeUrl, saveUrl };

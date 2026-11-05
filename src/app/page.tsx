@@ -10,7 +10,7 @@ export default function Home() {
           <div className="animate-pulse bg-zinc-200 rounded-xl w-full max-w-3xl h-[42px]" />
         }
       >
-        <Logo whitAnimation />
+        <Logo withAnimation />
       </ClientOnly>
       <p className="text-zinc-500 mt-2">Shorten and manage your URLs easily.</p>
       <ClientOnly

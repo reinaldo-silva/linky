@@ -1,14 +1,10 @@
 import { IRepository } from "@shared/repository/interface";
-import { URL } from "@shared/useCases/interface";
+import { ShortUrl } from "@shared/useCases/interface";
 
 export class GetUrlUseCase {
-  db: IRepository;
+  constructor(private readonly db: IRepository) {}
 
-  constructor(db: IRepository) {
-    this.db = db;
-  }
-
-  async handle(key: string): Promise<URL | null> {
+  async handle(key: string): Promise<ShortUrl | null> {
     const url = await this.db.get<string>(key);
 
     if (!url) {

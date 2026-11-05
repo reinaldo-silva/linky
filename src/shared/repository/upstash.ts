@@ -1,34 +1,21 @@
-import { Redis } from "@upstash/redis";
 import { IRepository } from "@shared/repository/interface";
+import { Redis } from "@upstash/redis";
+
+const ONE_DAY_SECONDS = 24 * 60 * 60;
 
 export class UpstashRepository implements IRepository {
-  private oneDaySeconds = 24 * 60 * 60;
   private redis: Redis;
 
-  constructor() {
-    const redisUrl = process.env.UPSTASH_REDIS_REST_URL;
-    const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN;
-
-    if (!redisUrl || !redisToken) {
-      throw new Error(
-        "Upstash Redis URL or Token iws missing from environment variables"
-      );
-    }
-
-    this.redis = new Redis({
-      url: redisUrl,
-      token: redisToken,
-    });
+  constructor(url: string, token: string) {
+    this.redis = new Redis({ url, token });
   }
 
   async get<T = unknown>(key: string): Promise<T | null> {
-    const url = await this.redis.get<T>(key);
-    return url;
+    return this.redis.get<T>(key);
   }
 
-  async create<T = unknown>(key: string, data: T, exp: number): Promise<T> {
-    await this.redis.set(key, data);
-    await this.redis.expire(key, exp * this.oneDaySeconds);
+  async create<T = unknown>(key: string, data: T, expDays: number): Promise<T> {
+    await this.redis.set(key, data, { ex: expDays * ONE_DAY_SECONDS });
     return data;
   }
 }

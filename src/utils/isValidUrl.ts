@@ -1,14 +1,18 @@
+import { ensureHttp } from "@/utils/ensureHttp";
+
 export function isValidURL(url: string): boolean {
+  const value = url.trim();
+
+  if (!value || /\s/.test(value)) {
+    return false;
+  }
+
   try {
-    const fullURL =
-      url.startsWith("http://") || url.startsWith("https://")
-        ? url
-        : `http://${url}`;
+    const { hostname } = new URL(ensureHttp(value));
 
-    const parsedURL = new URL(fullURL);
-
-    return !!parsedURL;
-  } catch (_) {
+    // Requires a domain like "google.com"; "localhost" is allowed for local testing.
+    return hostname === "localhost" || hostname.includes(".");
+  } catch {
     return false;
   }
 }

@@ -6,7 +6,7 @@ import { Dropdown } from "@/components/Dropdown";
 import { Input } from "@/components/Input";
 import { ModalSlide } from "@/components/ModalSlide";
 import { Radio } from "@/components/Radio";
-import useClipboardCheck from "@/hook/useClipboardCheck";
+import { useClipboardCheck } from "@/hooks/useClipboardCheck";
 import { addDays } from "@/utils/date";
 import { isValidURL } from "@/utils/isValidUrl";
 import { saveUrl, UrlType } from "@/utils/localStorageUtils";
@@ -33,8 +33,13 @@ export function ShortenUrlForm() {
   const [expirationIndex, setExpirationIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const { clipboardContent, hasClipboardContent, resetData } =
-    useClipboardCheck();
+  const { clipboardContent, resetData } = useClipboardCheck();
+  const expiration = expirationOptions[expirationIndex];
+
+  const showClipboardSuggestion =
+    !!clipboardContent &&
+    clipboardContent !== url &&
+    isValidURL(clipboardContent);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -44,33 +49,37 @@ export function ShortenUrlForm() {
     }
 
     setIsLoading(true);
-    const res = await fetch(`/api/shorten`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        url,
-        exp: expirationOptions[expirationIndex].value,
-      }),
-    }).finally(() => setIsLoading(false));
 
-    const resJson = await res.json();
+    let resJson: { shortUrl?: string; message?: string };
+
+    try {
+      const res = await fetch(`/api/shorten`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ url, exp: expiration.value }),
+      });
+
+      resJson = await res.json();
+    } catch {
+      resJson = {};
+    } finally {
+      setIsLoading(false);
+    }
 
     if (!resJson.shortUrl) {
       return newToast({
-        text: "There was a problem generating your shortUrl",
+        text: resJson.message ?? "There was a problem generating your shortUrl",
         type: "error",
       });
     }
 
-    if (inputRef.current) {
-      inputRef.current.blur();
-    }
+    inputRef.current?.blur();
 
     const newUrl: UrlType = {
       url,
-      expiration: String(addDays(expirationOptions[expirationIndex].value)),
+      expiration: addDays(expiration.value).toISOString(),
       shortenUrl: resJson.shortUrl,
     };
 
@@ -97,7 +106,7 @@ export function ShortenUrlForm() {
             placeholder="google.com"
           />
 
-          {hasClipboardContent && clipboardContent && (
+          {showClipboardSuggestion && (
             <button
               className="flex gap-1 text-sky-500 hover:text-sky-600 self-end items-center hover:underline"
               type="button"
@@ -120,7 +129,7 @@ export function ShortenUrlForm() {
             <Badge>
               <TimerReset size={18} strokeWidth={3} />
               <p className="font-semibold">
-                {expirationOptions[expirationIndex].description}
+                {expiration.description}
               </p>
             </Badge>
           </Dropdown.Trigger>
@@ -132,7 +141,7 @@ export function ShortenUrlForm() {
                 label={op.description}
                 id={`${op.value}-${index}`}
                 key={index}
-                checked={expirationOptions[expirationIndex].value === op.value}
+                checked={expiration.value === op.value}
                 value={op.value}
                 name="expiration"
                 onChange={() => {
@@ -156,7 +165,7 @@ export function ShortenUrlForm() {
               <Badge>
                 <TimerReset size={18} strokeWidth={3} />
                 <p className="font-semibold">
-                  {expirationOptions[expirationIndex].description}
+                  {expiration.description}
                 </p>
               </Badge>
             </div>
@@ -174,7 +183,7 @@ export function ShortenUrlForm() {
             variant={ButtonVariants.GHOST}
             type="button"
             onClick={closeModal}
-            className="mt-4 !w-auto"
+            className="mt-4 w-auto!"
           >
             Generate a new linky!
           </Button>

@@ -12,9 +12,9 @@
 
 ### Frontend
 
-- **Next.js 14**: Utilizado como framework para a aplicação frontend, garantindo renderização eficiente e experiência otimizada.
-- **React**: Biblioteca JavaScript utilizada para construir interfaces de usuário interativas e dinâmicas.
-- **Tailwind CSS**: Framework de CSS utilitário que facilita a criação de layouts responsivos e estilizados.
+- **Next.js 16**: Utilizado como framework para a aplicação frontend, garantindo renderização eficiente e experiência otimizada.
+- **React 19**: Biblioteca JavaScript utilizada para construir interfaces de usuário interativas e dinâmicas.
+- **Tailwind CSS 4**: Framework de CSS utilitário que facilita a criação de layouts responsivos e estilizados.
 - **React Spring**: Biblioteca de animações usada para criar transições suaves e animações no frontend.
 
 ### Backend
@@ -36,16 +36,16 @@
    cd linky
    ```
 
-3. Instale as dependências:
+3. Instale as dependências (o projeto usa [pnpm](https://pnpm.io/) e requer Node.js 22 ou superior):
 
    ```bash
-   npm install
+   pnpm install
    ```
 
 4. Rode o projeto localmente:
 
    ```bash
-   npm run dev
+   pnpm dev
    ```
 
 5. Acesse o app no navegador:
@@ -59,7 +59,7 @@
 Para utilizar o Upstash como solução de armazenamento Redis, siga os passos abaixo:
 
 1. Crie uma conta no [Upstash](https://upstash.com/).
-2. Crie um arquivo `.env` na raiz do projeto e adicione as seguintes variáveis de ambiente:
+2. Crie um arquivo `.env.local` na raiz do projeto e adicione as seguintes variáveis de ambiente:
 
    ```bash
    UPSTASH_REDIS_REST_URL=<sua-url-upstash>
@@ -67,6 +67,15 @@ Para utilizar o Upstash como solução de armazenamento Redis, siga os passos ab
    ```
 
 3. Após configurar as variáveis de ambiente, o projeto estará pronto para utilizar o Upstash Redis como banco de dados para os links encurtados.
+
+Sem essas variáveis, em desenvolvimento o projeto usa um armazenamento em memória (os links são perdidos ao reiniciar o servidor). Em produção elas são obrigatórias.
+
+## Scripts
+
+- `pnpm dev`: servidor de desenvolvimento
+- `pnpm build` / `pnpm start`: build e servidor de produção
+- `pnpm lint`: ESLint
+- `pnpm test`: testes com Jest
 
 ## Como Contribuir
 

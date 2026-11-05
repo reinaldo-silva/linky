@@ -1,28 +1,18 @@
 "use client";
-import {
-  Fragment,
-  PropsWithChildren,
-  ReactNode,
-  useEffect,
-  useState,
-} from "react";
+import { PropsWithChildren, ReactNode, useSyncExternalStore } from "react";
 
 interface ClientOnlyProps extends PropsWithChildren {
   fallback?: ReactNode;
 }
 
-export function ClientOnly({
-  children,
-  fallback,
-  ...delegated
-}: ClientOnlyProps) {
-  const [hasMounted, setHasMounted] = useState(false);
+const subscribe = () => () => {};
 
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
+export function ClientOnly({ children, fallback = null }: ClientOnlyProps) {
+  const isClient = useSyncExternalStore(
+    subscribe,
+    () => true,
+    () => false
+  );
 
-  const comp = fallback ?? null;
-
-  return <Fragment {...delegated}>{!hasMounted ? comp : children}</Fragment>;
+  return isClient ? children : fallback;
 }
