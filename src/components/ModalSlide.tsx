@@ -1,5 +1,5 @@
 "use client";
-import { useClickOutside } from "@/hook/useClickOutside";
+import { useClickOutside } from "@/hooks/useClickOutside";
 import { animated, useTransition } from "@react-spring/web";
 import clsx from "clsx";
 import { X } from "lucide-react";
@@ -40,7 +40,7 @@ export function ModalSlide({ children, isOpen, closeModal }: ModalSlideProps) {
         item ? (
           <animated.div
             style={style}
-            className="fixed w-full h-svh bg-zinc-700/40 backdrop-blur-sm top-0 left-0"
+            className="fixed w-full h-svh bg-zinc-700/40 backdrop-blur-xs top-0 left-0"
           />
         ) : null
       )}

@@ -5,10 +5,10 @@ import { Link2 } from "lucide-react";
 import { useState } from "react";
 
 interface LogoProps {
-  whitAnimation?: boolean;
+  withAnimation?: boolean;
 }
 
-export function Logo({ whitAnimation = false }: LogoProps) {
+export function Logo({ withAnimation = false }: LogoProps) {
   const [showLinky, setShowLinky] = useState(false);
 
   const url =
@@ -36,12 +36,12 @@ export function Logo({ whitAnimation = false }: LogoProps) {
         className={clsx(
           "ml-2 truncate flex-1 text-ellipsis max-w-[260px] sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-3xl",
           {
-            "text-xl font-mono": !showLinky && whitAnimation,
-            "font-sans text-3xl font-semibold": showLinky || !whitAnimation,
+            "text-xl font-mono": !showLinky && withAnimation,
+            "font-sans text-3xl font-semibold": showLinky || !withAnimation,
           }
         )}
       >
-        {whitAnimation
+        {withAnimation
           ? animatedText.to((val) =>
               fullText.slice(0, textLength - Math.floor(val))
             )

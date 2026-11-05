@@ -2,8 +2,10 @@ import { Badge } from "@/components/Badge";
 import { TerminalCode } from "@/components/TerminalCode";
 import { headers } from "next/headers";
 
-export default function Docs() {
-  const host = headers().get("host");
+export default async function Docs() {
+  const headersList = await headers();
+  const host = headersList.get("host");
+  const protocol = headersList.get("x-forwarded-proto") ?? "http";
 
   return (
     <div className="h-svh flex flex-col items-start overflow-x-hidden flex-1 mx-auto pt-28 pb-6 overflow-scroll space-y-5 scrollbar-hide">
@@ -68,8 +70,8 @@ export default function Docs() {
             <p>
               The <code className="code-text">exp</code> parameter is optional
               and represents the expiration time of the shortened link, in days.
-              If not provided, the link will have a default expiration time of 1
-              day.
+              It must be an integer between 1 and 365. If not provided, the link
+              will have a default expiration time of 1 day.
             </p>
 
             <div>
@@ -85,7 +87,7 @@ export default function Docs() {
       <div className="w-full">
         <strong>Complete example:</strong>
         <TerminalCode>
-          <p className="text-gray-500">{`// POST - ${host}/api/shorten`}</p>
+          <p className="text-gray-500">{`// POST - ${protocol}://${host}/api/shorten`}</p>
           <p className="text-gray-500">{`// body:`}</p>
           <p>{`{`}</p>
           <p>{`     "url": "google.com"`}</p>
@@ -129,7 +131,27 @@ export default function Docs() {
         <TerminalCode>
           <p>{`{`}</p>
           <p>{`     "message": "Linky your url!"`}</p>
-          <p>{`     "shortUrl": "${host}/s/JUli3GrR"`}</p>
+          <p>{`     "shortUrl": "${protocol}://${host}/s/JUli3GrR"`}</p>
+          <p>{`}`}</p>
+        </TerminalCode>
+      </div>
+
+      <div className="flex gap-1">
+        <Badge>400</Badge>
+      </div>
+
+      <p>
+        Returned when the body is not valid JSON, the{" "}
+        <code className="code-text">url</code> is missing or invalid, or the{" "}
+        <code className="code-text">exp</code> is out of range. The{" "}
+        <code className="code-text">message</code> field describes the problem.
+      </p>
+
+      <div className="w-full">
+        <strong>Example:</strong>
+        <TerminalCode>
+          <p>{`{`}</p>
+          <p>{`     "message": "The URL is invalid!"`}</p>
           <p>{`}`}</p>
         </TerminalCode>
       </div>

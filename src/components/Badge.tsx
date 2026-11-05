@@ -23,7 +23,7 @@ export function Badge({ children, variant = "default" }: BadgeProps) {
           "bg-lime-200 text-zinc-700": variant === "required",
           "bg-purple-800": variant === "violet",
           "bg-zinc-200 text-zinc-800": variant === "white",
-          "bg-zinc-200 text-zinc-800 !border-zinc-800": variant === "outline",
+          "bg-zinc-200 text-zinc-800 border-zinc-800!": variant === "outline",
           "bg-sky-200 text-zinc-700": variant === "optional",
         }
       )}

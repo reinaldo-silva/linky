@@ -1,21 +1,37 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-* {
-  @apply font-sans;
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
-/* Definir a scroll bar invisível */
-.scrollbar-hide::-webkit-scrollbar {
-  display: none; /* Ocultar barra no WebKit (Chrome, Safari) */
+/*
+  Tailwind v4 changed some defaults. These keep the v3 look:
+  borders without a color use gray-200, and buttons show a pointer cursor.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
 }
 
-.scrollbar-hide {
-  -ms-overflow-style: none; /* Ocultar barra no IE e Edge */
-  scrollbar-width: none; /* Ocultar barra no Firefox */
+@utility scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
-.code-text {
+@utility code-text {
   @apply font-mono bg-zinc-200 p-1 py-0.5 rounded-md border border-zinc-300;
 }
